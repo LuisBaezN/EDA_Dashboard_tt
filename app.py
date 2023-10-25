@@ -2,17 +2,44 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-data = pd.read_excel('data.xlsx') # leer los datos
+def plot_hist(title, row):
+    st.write(title)
+    
+    fig = px.histogram(data, x=row)
+
+    st.plotly_chart(fig, use_container_width=True)
+
+data = pd.read_excel('data.xlsx')
+data.columns = list(data.columns.str.strip())
 
 st.header('Vizualización de datos')
-hist_button = st.button('Construir histograma') # crear un botón
 
-if hist_button: # al hacer clic en el botón
-    # escribir un mensaje
-    st.write('Creación de un histograma para el conjunto de datos de los ingresos de medicamentos.')
+st.subheader('Estructura')
+st.write(data.head(3))
+
+st.write('Seleccione los datos que desee vizualizar en un histograma')
+form = st.form("checkboxes", clear_on_submit=True)
+with form:
+    med_rev = st.checkbox("Ganancias en medicamentos")
+    lab_cost = st.checkbox("Costo de laboratorios")
+    con_rev = st.checkbox("Ganancias en consulta")
+
+submit = form.form_submit_button("Enviar")
+
+if med_rev:
+    plot_hist('Ganancias en medicamentos', 'Medication Revenue')
+
+if lab_cost:
+    plot_hist('Costo de laboratorios', 'Lab Cost')
+
+if con_rev:
+    plot_hist('Ganancias en consulta', 'Consultation Revenue')
+
+st.subheader("Tiempo")
+hist_button = st.button('Vizualizar')
+
+if hist_button:
+    st.write('Ganancias en medicamentos')
     
-    # crear un histograma
-    fig = px.histogram(data, x=' Medication Revenue ')
-
-    # mostrar un gráfico Plotly interactivo
-    st.plotly_chart(fig, use_container_width=True)
+    fig = px.scatter(data, x='Date', y='Medication Revenue')
+    fig.show()
