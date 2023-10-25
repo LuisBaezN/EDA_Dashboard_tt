@@ -37,11 +37,11 @@ if lab_cost:
 if con_rev:
     plot_hist('Ganancias en consulta', 'Consultation Revenue')
 
-st.subheader("Tiempo")
+st.subheader("Ganancias")
 hist_button = st.button('Vizualizar')
 
 if hist_button:
-    st.write('Ganancias en medicamentos')
+    st.write('Ganancias de consultas contra medicamentos')
     
-    fig = px.scatter(data, x='Date', y='Medication Revenue')
-    fig.show()
+    fig = px.scatter(data, x='Consultation Revenue', y='Medication Revenue')
+    st.plotly_chart(fig, use_container_width=True)
