@@ -12,6 +12,8 @@ def plot_hist(title, row):
 data = pd.read_excel('data.xlsx')
 data.columns = list(data.columns.str.strip())
 
+data['Lab Cost'] = data['Lab Cost'].replace(' $-   ', '0').astype(float)
+
 st.header('Vizualización de datos')
 
 st.subheader('Estructura')
